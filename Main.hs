@@ -27,7 +27,10 @@ data RedisValue = RedisValue { redisValueIMEI :: T.Text
                              , redisValueUID  :: T.Text } deriving (Show, Generic)
 
 instance FromJSON Status
-instance ToJSON Status
+instance ToJSON Status where
+  toJSON Online = "online"
+  toJSON Offline = "offline"
+  
 instance FromJSON Session
 instance ToJSON Session where
   toJSON (Session sstatus uid imei) = object ["status" .= sstatus
@@ -52,7 +55,7 @@ main :: IO ()
 main = do
   redis <- R.connect R.defaultConnectInfo
   scotty 3000 $ do
-    middleware logStdoutDev
+    middleware logStdout
     get "/" $ do
       send401
     get "/session/" $ do
