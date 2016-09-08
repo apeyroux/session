@@ -43,11 +43,8 @@ sessionFromRedis :: R.Connection -> T.Text -> IO (Maybe RedisValue)
 sessionFromRedis redis key = R.runRedis redis $ do
   session <- R.get (TE.encodeUtf8 key)
   case session of
-    Right s -> do
-      case s of
-        Just sessionjs -> return (decode (BSL.fromStrict sessionjs)::Maybe RedisValue)
-        Nothing        -> return Nothing
-    Left _ -> return Nothing
+    (Right (Just s)) -> return (decode (BSL.fromStrict s)::Maybe RedisValue)
+    _ -> return Nothing
 
 main :: IO ()
 main = do
