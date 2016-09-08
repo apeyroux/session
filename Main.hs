@@ -31,8 +31,8 @@ instance ToJSON Status
 instance FromJSON Session
 instance ToJSON Session where
   toJSON (Session sstatus uid imei) = object ["status" .= sstatus
-                                             , "imei" .= imei
-                                             , "uid" .= uid]
+                                             , "imei"  .= imei
+                                             , "uid"   .= uid]
 
 instance ToJSON RedisValue
 instance FromJSON RedisValue where
