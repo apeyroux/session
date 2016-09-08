@@ -30,7 +30,9 @@ instance FromJSON Status
 instance ToJSON Status
 instance FromJSON Session
 instance ToJSON Session where
-  toJSON (Session sstatus uid imei) = object ["status" .= sstatus, "imei" .= imei, "uid" .= uid]
+  toJSON (Session sstatus uid imei) = object ["status" .= sstatus
+                                             , "imei" .= imei
+                                             , "uid" .= uid]
 
 instance ToJSON RedisValue
 instance FromJSON RedisValue where
@@ -41,7 +43,7 @@ instance FromJSON RedisValue where
 
 sessionFromRedis :: R.Connection -> T.Text -> IO (Maybe RedisValue)
 sessionFromRedis redis key = R.runRedis redis $ do
-  session <- R.get (TE.encodeUtf8 key)
+  session <- R.get $ TE.encodeUtf8 key
   case session of
     (Right (Just s)) -> return (decode (BSL.fromStrict s)::Maybe RedisValue)
     _ -> return Nothing
