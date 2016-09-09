@@ -30,7 +30,7 @@ instance FromJSON Status
 instance ToJSON Status where
   toJSON Online = "online"
   toJSON Offline = "offline"
-  
+
 instance FromJSON Session
 instance ToJSON Session where
   toJSON (Session sstatus uid imei) = object [ "status" .= sstatus
